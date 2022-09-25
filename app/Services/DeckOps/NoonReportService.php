@@ -1,16 +1,28 @@
 <?php
 
-namespace App\Services\EngineOps;
+namespace App\Services\DeckOps;
 
 use Alert;
-use App\Http\Requests\EngineOps\NoonReportRequest;
 use App\Models\NoonReport;
+use App\Http\Requests\DeckOps\NoonReportRequest;
+use Illuminate\Support\Facades\DB;
 
 class NoonReportService
 {
     public function index()
     {
-        return view('workshop.link');
+        $noon_report = NoonReport::paginate(5);
+        return view('pages.noon-report.index', compact('noon_report'));
+    }
+
+    public function show()
+    {
+        return view('pages.noon-report.show');
+    }
+
+    public function create()
+    {
+        return view('pages.noon-report.create');
     }
 
     public function store(NoonReportRequest $request)
@@ -76,13 +88,21 @@ class NoonReportService
         }
     }
 
+    public function edit()
+    {
+        return view('pages.noon-report.edit');
+    }
+
     public function update($id, NoonReportRequest $request)
     {
         try {
 
             $data = NoonReport::find($id);
 
-            $data->update($request->all());
+            DB::transaction(function () {
+                $data->update($request->all());
+            });
+
             Alert::success('Success', 'Noon Report Berhasil Diupdate');
         } catch (Exception $e) {
             Alert::error('Maaf', 'terjadi kesalahan');

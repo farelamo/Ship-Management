@@ -12,6 +12,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/masuk', function () {
         return view('pages.index');
     });
-    // Route::get();
+    Route::resource('noon-report', 'DeckOps\NoonReportController');
     Route::post('/logout', 'Auth\AuthController@logout');
 });

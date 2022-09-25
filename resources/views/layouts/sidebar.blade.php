@@ -32,7 +32,7 @@
                     </li>
                     <li>
                         <a class="nav-link"
-                            href="{{ url('noon-posision') }}">Noon Posision</a>
+                            href="{{ url('noon-report') }}">Noon Report</a>
                     </li>
                     <li>
                         <a class="nav-link"
