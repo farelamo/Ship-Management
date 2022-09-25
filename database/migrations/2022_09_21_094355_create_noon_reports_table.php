@@ -10,11 +10,16 @@ class CreateNoonReportsTable extends Migration
     {
         Schema::create('noon_reports', function (Blueprint $table) {
             $table->id();
-            $table->text('noon_desc');
-            $table->text('passage_plan');
-            $table->text('engine');
-            $table->text('current_rob');
-            $table->text('consumption_rate');
+            $table->text('noon_desc')->nullable();
+            $table->text('passage_plan')->nullable();
+            $table->text('engine')->nullable();
+            $table->text('current_rob')->nullable();
+            $table->text('consumption_rate')->nullable();
+            $table->boolean('empty_desc')->nullable();
+            $table->boolean('empty_passage')->nullable();
+            $table->boolean('empty_engine')->nullable();
+            $table->boolean('empty_current')->nullable();
+            $table->boolean('empty_consumption')->nullable();
             $table->timestamps();
         });
     }

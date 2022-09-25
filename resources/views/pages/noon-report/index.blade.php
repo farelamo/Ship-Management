@@ -12,12 +12,7 @@
             <div class="section-header">
                 <h1>Noon Report</h1>
                 <div class="section-header-button">
-                    <a href="noon-report/create" class="btn btn-primary">Add New</a>
-                </div>
-                <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="#">Modules</a></div>
-                    <div class="breadcrumb-item">DataTables</div>
+                    <a href="{{route('noon-report.create')}}" class="btn btn-primary">Add New</a>
                 </div>
             </div>
 
@@ -28,20 +23,64 @@
                             <div class="card-body">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="#">All <span
-                                                class="badge badge-white">5</span></a>
+                                        <a class="{{ app('request')->input('tab') == 'all' ? 'nav-link active' : 'nav-link' }}"
+                                            href="{{ route('noon-report.index', ['tab' => 'all']) }}">
+                                                All
+                                            <span
+                                                class="{{ app('request')->input('tab') == 'all' ? 'badge badge-white' : 'badge badge-primary' }}">
+                                                {{ $count['all'] }}
+                                            </span>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Draft <span
-                                                class="badge badge-primary">1</span></a>
+                                        <a class="{{ app('request')->input('tab') == 'noon-desc' ? 'nav-link active' : 'nav-link' }}"
+                                            href="{{ route('noon-report.index', ['tab' => 'noon-desc']) }}">
+                                                Noon Desc
+                                            <span
+                                                class="{{ app('request')->input('tab') == 'noon-desc' ? 'badge badge-white' : 'badge badge-primary' }}">
+                                                {{ $count['noon_desc'] }}
+                                            </span>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Pending <span
-                                                class="badge badge-primary">1</span></a>
+                                        <a class="{{ app('request')->input('tab') == 'passage-plan' ? 'nav-link active' : 'nav-link' }}"
+                                            href="{{ route('noon-report.index', ['tab' => 'passage-plan']) }}">
+                                                Passage Plan
+                                            <span
+                                                class="{{ app('request')->input('tab') == 'passage-plan' ? 'badge badge-white' : 'badge badge-primary' }}">
+                                                {{ $count['passage_plan'] }}
+                                            </span>
+                                        </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Trash <span
-                                                class="badge badge-primary">0</span></a>
+                                        <a class="{{ app('request')->input('tab') == 'engine' ? 'nav-link active' : 'nav-link' }}"
+                                            href="{{ route('noon-report.index', ['tab' => 'engine']) }}">
+                                                Engine
+                                            <span
+                                                class="{{ app('request')->input('tab') == 'engine' ? 'badge badge-white' : 'badge badge-primary' }}">
+                                                {{ $count['engine'] }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="{{ app('request')->input('tab') == 'current-rob' ? 'nav-link active' : 'nav-link' }}"
+                                            href="{{ route('noon-report.index', ['tab' => 'current-rob']) }}">
+                                                Current ROB
+                                            <span
+                                                class="{{ app('request')->input('tab') == 'current-rob' ? 'badge badge-white' : 'badge badge-primary' }}">
+                                                {{ $count['current_rob'] }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="{{ app('request')->input('tab') == 'consumption-rate' ? 'nav-link active' : 'nav-link' }}"
+                                            href="{{ route('noon-report.index', ['tab' => 'consumption-rate']) }}">
+                                                Consumption Rate
+                                            <span
+                                                class="{{ app('request')->input('tab') == 'consumption-rate' ? 'badge badge-white' : 'badge badge-primary' }}">
+                                                {{ $count['consumption_rate'] }}
+                                            </span>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -78,7 +117,7 @@
 
                                 <div class="table-responsive">
                                     <table class="table-striped table">
-                                        <tr>
+                                        <tr align="center">
                                             <th class="text-center">
                                                 <div class="custom-checkbox custom-checkbox-table custom-control">
                                                     <input type="checkbox" data-checkboxes="mygroup"
@@ -94,7 +133,7 @@
                                             <th>Consumption Rate</th>
                                         </tr>
                                         @foreach ($noon_report as $data)
-                                            <tr>
+                                            <tr align="center">
                                                 <td>
                                                     <div class="custom-checkbox custom-control">
                                                         <input type="checkbox" data-checkboxes="mygroup"
@@ -104,30 +143,32 @@
                                                             class="custom-control-label">&nbsp;</label>
                                                     </div>
                                                 </td>
-                                                <td>{{ $data->noon_desc }}
+                                                <td>{{ $data->noon_desc['ship_name'] }}
                                                     <div class="table-links">
                                                         <a href="#" class="text-primary">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                         <div class="bullet"></div>
-                                                        <a href="#">
+                                                        <a href="{{ route('noon-report.edit', $data->id) }}">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <div class="bullet"></div>
-                                                        <a href="#" class="text-danger">
+                                                        <a href="#" class="text-danger" data-toggle="modal" 
+                                                            data-target="#hapus" onclick='hapus("{{ $data->id }}", "{{ $data->noon_desc["ship_name"] }}")'
+                                                        >
                                                             <i class="fas fa-trash"></i>
                                                         </a>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    {{ $data->passage_plan }}
+                                                    {{ $data->passage_plan['track'] }}
                                                 </td>
                                                 <td>
-                                                    {{ $data->engine }}
+                                                    {{ $data->engine['rpm'] }}
                                                 </td>
-                                                <td>{{ $data->current_rob }}</td>
+                                                <td>{{ $data->current_rob['mfo'] }}</td>
                                                 <td>
-                                                    {{ $data->consumption_rate }}
+                                                    {{ $data->consumption_rate['mfo_consum'] }}
                                                     {{-- <div class="badge badge-primary">Published</div> --}}
                                                 </td>
                                             </tr>
@@ -144,4 +185,44 @@
             </div>
         </section>
     </div>
+
+    <div class="modal fade" id="hapus" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hapus Surat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="material-icons">x</i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="forms-sample" method="post" id="formHapus">
+                        @csrf
+                        @method('DELETE')
+                        
+                        <div class="form-group">
+                            <input type="hidden" class="d-none" id="dId" name="id" required>
+                            <p id="dhapus"></p>
+                        </div>
+                        <hr>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function hapus(id, shipName) {
+            console.log(id, shipName)
+            document.getElementById("dId").value = id
+            document.getElementById("dhapus").textContent = 'Apakah anda yakin ingin menghapus "' + shipName + '"?'
+            document.getElementById('formHapus').action = "/noon-report/" + id;
+        }
+    </script>
+@endpush

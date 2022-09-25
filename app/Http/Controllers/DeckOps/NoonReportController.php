@@ -12,8 +12,8 @@ class NoonReportController extends Controller
         $this->service = $service;
     }
 
-    public function index(){
-        return $this->service->index();
+    public function index(Request $request){
+        return $this->service->index($request);
     }
 
     public function show($id){
