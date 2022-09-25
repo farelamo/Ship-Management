@@ -4,6 +4,7 @@ namespace App\Services\DeckOps;
 
 use Alert;
 use App\Models\NoonReport;
+use Illuminate\Http\Request;
 use App\Http\Requests\DeckOps\NoonReportRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +26,7 @@ class NoonReportService
         return view('pages.noon-report.create');
     }
 
-    public function store(NoonReportRequest $request)
+    public function store(Request $request)
     {
         try {
             $data = [
@@ -71,11 +72,11 @@ class NoonReportService
                     'fw'        => $request->fw . ' MT',
                 ],
                 'consumption_rate' => [
-                    'mfo'       => $request->mfo_consum . ' MT/DAY', 
-                    'mdo'       => $request->mdo_consum . ' MT/DAY', 
-                    'hsd'       => $request->hsd_consum . ' MT/DAY',
-                    'lub_oil'   => $request->lub_oil_consum . ' MT/DAY',
-                    'fw'        => $request->fw_consum. ' MT/DAY',
+                    'mfo_consum'       => $request->mfo_consum . ' MT/DAY', 
+                    'mdo_consum'       => $request->mdo_consum . ' MT/DAY', 
+                    'hsd_consum'       => $request->hsd_consum . ' MT/DAY',
+                    'lub_oil_consum'   => $request->lub_oil_consum . ' MT/DAY',
+                    'fw_consum'        => $request->fw_consum. ' MT/DAY',
                 ]
             ];
 
