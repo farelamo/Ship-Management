@@ -14,6 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        NoonReport::factory(7)->create();
+        NoonReport::factory(9999)->create();
     }
 }

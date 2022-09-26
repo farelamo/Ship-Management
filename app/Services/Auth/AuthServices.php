@@ -29,7 +29,7 @@
             ])){
                 // cara 1 toast
                 toast('Selamat datang kembali ' . Auth::user()->fname, 'success');
-                return redirect('/masuk');
+                return redirect('/dashboard');
             }
             alert()->error('Maaf','Password Salah'); // cara 2 alert
             return redirect('/login');

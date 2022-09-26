@@ -97,38 +97,76 @@ class NoonReportService
         return $noon_report;
     }
 
-    public function index(Request $request)
+    public function queryIndex($check, $search)
     {
-        $normal             = NoonReport::paginate(5);
-        $noon_desc          = NoonReport::where('empty_desc', '=', true)->paginate(5);
-        $passage_plan       = NoonReport::where('empty_passage', '=', true)->paginate(5);
-        $engine             = NoonReport::where('empty_engine', '=', true)->paginate(5);
-        $current_rob        = NoonReport::where('empty_current', '=', true)->paginate(5);
-        $consumption_rate   = NoonReport::where('empty_consumption', '=', true)->paginate(5);
+            $data = NoonReport::select(DB::raw(
+                        "id, noon_desc, JSON_UNQUOTE(JSON_EXTRACT(noon_desc, '$.ship_name')), 
+                        passage_plan, engine, current_rob, consumption_rate, empty_desc, empty_passage,
+                        empty_engine, empty_current, empty_consumption"
+                    ));
 
-        if ($request->query('tab') == 'noon-desc'){
-            $noon_report = $noon_desc;
-        }else if ($request->query('tab') == 'passage-plan'){
-            $noon_report = $passage_plan;
-        }else if ($request->query('tab') == 'engine'){
-            $noon_report = $engine;
-        }else if ($request->query('tab') == 'current-rob'){
-            $noon_report = $current_rob;
-        }else if ($request->query('tab') == 'consumption-rate'){
-            $noon_report = $consumption_rate;
+            $data = $data->whereRaw(
+                                (!is_null($check) ? $check . ' = true AND ' : '') . 
+                                ("JSON_UNQUOTE(JSON_EXTRACT(noon_desc, '$.ship_name')) LIKE '%" . (!is_null($search) ? $search : '') . "%'")
+                            )
+                            ->orderByDesc('id');
+            return $data;
+    }
+
+    public function tabCondition($tab, $search)
+    {
+
+        $normal             = $this->queryIndex(null, $search);
+        $noon_desc          = $this->queryIndex('empty_desc', $search);
+        $passage_plan       = $this->queryIndex('empty_passage', $search);
+        $engine             = $this->queryIndex('empty_engine', $search);
+        $current_rob        = $this->queryIndex('empty_current', $search);
+        $consumption_rate   = $this->queryIndex('empty_consumption', $search);
+
+        if ($tab == 'noon-desc'){
+            $noon_report = $noon_desc->paginate(5);
+        }else if ($tab == 'passage-plan'){
+            $noon_report = $passage_plan->paginate(5);
+        }else if ($tab == 'engine'){
+            $noon_report = $engine->paginate(5);
+        }else if ($tab == 'current-rob'){
+            $noon_report = $current_rob->paginate(5);
+        }else if ($tab == 'consumption-rate'){
+            $noon_report = $consumption_rate->paginate(5);
         }else {
-            $noon_report = $normal;
+            $noon_report = $normal->paginate(5);
         }
 
         $count = [
-            'all'               => count($normal),
-            'noon_desc'         => count($noon_desc),
-            'passage_plan'      => count($passage_plan),
-            'engine'            => count($engine),
-            'current_rob'       => count($current_rob),
-            'consumption_rate'  => count($consumption_rate),
+            'all'               => count($normal->get()),
+            'noon_desc'         => count($noon_desc->get()),
+            'passage_plan'      => count($passage_plan->get()),
+            'engine'            => count($engine->get()),
+            'current_rob'       => count($current_rob->get()),
+            'consumption_rate'  => count($consumption_rate->get()),
         ];
-        
+
+        return [
+            'noon_report' => $noon_report,
+            'count'       => $count,
+        ];
+    }
+
+    public function search(Request $request)
+    {
+        $noon_report  = $this->tabCondition($request->query('tab'), $request->query('search'));
+        $noon_report  = $data['noon_report'];
+        $count        = $data['count'];
+
+        return view('pages.noon-report.index', compact('noon_report', 'count'));
+    }
+
+    public function index(Request $request)
+    {
+        $data         = $this->tabCondition($request->query('tab'), $request->query('search'));
+        $noon_report  = $data['noon_report'];
+        $count        = $data['count'];
+
         return view('pages.noon-report.index', compact('noon_report', 'count'));
     }
 

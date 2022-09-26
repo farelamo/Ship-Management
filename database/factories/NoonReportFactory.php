@@ -60,6 +60,11 @@ class NoonReportFactory extends Factory
                 'lub_oil_consum'    => $this->faker->numberBetween(0, 100),
                 'fw_consum'         => $this->faker->numberBetween(0, 100),
             ],
+            'empty_desc' => $this->faker->boolean(),
+            'empty_passage' => $this->faker->boolean(),
+            'empty_engine' => $this->faker->boolean(),
+            'empty_current' => $this->faker->boolean(),
+            'empty_consumption' => $this->faker->boolean(),
         ];
     }
 }

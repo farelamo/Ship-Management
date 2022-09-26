@@ -6,6 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport">
     <title>Login &mdash; SSM</title>
+    <link rel="shortcut icon" href="{{ asset('img/ssm-yellow.png') }}">
 
     <!-- General CSS Files -->
     <link rel="stylesheet"
@@ -91,7 +92,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8 col-12 order-lg-2 min-vh-100 background-walk-y position-relative overlay-gradient-bottom order-1"
-                    data-background="{{ asset('img/unsplash/login-bg.jpg') }}">
+                    data-background="{{ asset('img/Ship Splash.jpeg') }}">
                     <div class="absolute-bottom-left index-2">
                         <div class="text-light p-5 pb-2">
                             <div class="mb-5 pb-3">
