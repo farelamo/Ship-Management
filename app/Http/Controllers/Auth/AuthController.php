@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginValidator;
 use App\Http\Requests\Auth\RegisterValidator;
 use App\Services\Auth\AuthServices;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -13,9 +14,9 @@ class AuthController extends Controller
         $this->service = $service;
     }
     
-    public function showLogin()
+    public function showLogin(Request $request)
     {
-        return $this->service->showLogin();
+        return $this->service->showLogin($request);
     }
 
     public function login(LoginValidator $request)

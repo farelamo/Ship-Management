@@ -103,9 +103,9 @@
                                     </select>
                                 </div>
                                 <div class="float-right">
-                                    <form>
+                                    <form action="{{ route('noon-report.index') }}" method="GET">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search">
+                                            <input type="text" class="form-control" name="search" placeholder="Search">
                                             <div class="input-group-append">
                                                 <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                             </div>
@@ -145,7 +145,7 @@
                                                 </td>
                                                 <td>{{ $data->noon_desc['ship_name'] }}
                                                     <div class="table-links">
-                                                        <a href="#" class="text-primary">
+                                                        <a href="{{ route('noon-report.show', $data->id) }}" class="text-primary">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
                                                         <div class="bullet"></div>

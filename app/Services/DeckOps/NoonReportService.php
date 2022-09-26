@@ -170,9 +170,9 @@ class NoonReportService
         return view('pages.noon-report.index', compact('noon_report', 'count'));
     }
 
-    public function show()
+    public function show($id)
     {
-        return view('pages.noon-report.show');
+        return view('pages.noon-report.print');
     }
 
     public function create()

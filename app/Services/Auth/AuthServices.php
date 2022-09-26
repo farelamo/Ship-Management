@@ -5,11 +5,13 @@
     use App\Http\Requests\Auth\RegisterValidator;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Hash;
+    use Illuminate\Http\Request;
     use App\Models\User;
     Use Alert;
 
     class AuthServices {
-        public function showLogin()
+
+        public function showLogin(Request $request)
         {
             return view('auth.login');
         }
@@ -20,7 +22,7 @@
 
             if(!$user){
                 Alert::error('Maaf', 'email tidak ditemukan'); // cara 1 alert pake Use Alert;
-                return redirect('/login');
+                return redirect('/');
             }
 
             if(Auth::Attempt([
@@ -32,7 +34,7 @@
                 return redirect('/dashboard');
             }
             alert()->error('Maaf','Password Salah'); // cara 2 alert
-            return redirect('/login');
+            return redirect('/');
         }
         
         public function showRegister()
@@ -51,14 +53,14 @@
             ]);
 
             alert()->success('success', 'Akun berhasil dibuat');
-            return redirect('/login');
+            return redirect('/');
         }
 
         public function logout()
         {
             Auth::logout();
             alert()->success('success', 'Anda berhasil logout');
-            return redirect('/login');
+            return redirect('/');
         }
     }
 ?>
